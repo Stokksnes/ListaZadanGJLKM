@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="ListaZadanGJLKM.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModel="clr-namespace:ListaZadanGJLKM.ViewModel">
+    <ContentPage.BindingContext>
+        <viewModel:TaskViewModel />
+    </ContentPage.BindingContext>
+
+    <StackLayout Padding="10">
+        <!--  Pole dodania zadania  -->
+        <Entry Placeholder="Wpisz nowe zadanie" Text="{Binding NewTaskName}" />
+
+        <!--  Pole opisu zadania  -->
+        <Entry Placeholder="Dodaj opis zadania" Text="{Binding NewTaskDescription}" />
+
+        <!--  Przycisk dodania zadania  -->
+        <Button Command="{Binding AddTaskCommand}" Text="Dodaj zadanie" />
+
+        <!--  Lista zadań  -->
+        <CollectionView ItemsSource="{Binding Tasks}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <!--  Przycisk usunięcia zadania  -->
+                                <SwipeItem
+                                    BackgroundColor="Red"
+                                    Command="{Binding BindingContext.RemoveTaskCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
+                                    CommandParameter="{Binding .}"
+                                    Text="Usuń" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+
+                        <!--  Zawartość elementu listy  -->
+                        <Grid Padding="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <!--  Nazwa zadania  -->
+                            <Label Text="{Binding Name}" VerticalOptions="Center" />
+
+                            <!--  Opis zadania  -->
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Text="{Binding Description}"
+                                VerticalOptions="Center" />
+
+                            <!--  Oznaczenie czy zadanie zostało wykonane  -->
+                            <CheckBox
+                                Grid.Column="1"
+                                IsChecked="{Binding IsCompleted}"
+                                VerticalOptions="Center" />
+                        </Grid>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+</ContentPage>
